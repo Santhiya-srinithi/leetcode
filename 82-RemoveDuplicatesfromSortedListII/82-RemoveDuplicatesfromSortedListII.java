@@ -1,26 +1,23 @@
-// Last updated: 8/10/2026, 9:09:59 PM
-1class Solution {
-2    public ListNode deleteDuplicates(ListNode head) {
-3        if (head == null || head.next == null) return head;
-4
-5        ListNode dummy = new ListNode(-1); // Dummy node to handle head removals
-6        dummy.next = head;
-7        ListNode prev = dummy;
-8        ListNode cur = head;
-9
-10        while (cur != null && cur.next != null) {
-11            if (cur.val == cur.next.val) {
-12                // Skip all nodes with the same value
-13                while (cur.next != null && cur.val == cur.next.val) {
-14                    cur = cur.next;
-15                }
-16                prev.next = cur.next; // Remove duplicates
-17            } else {
-18                prev = prev.next; // Move to next distinct node
-19            }
-20            cur = cur.next;
-21        }
-22
-23        return dummy.next;
-24    }
-25}
+// Last updated: 8/10/2026, 9:18:02 PM
+1public class Solution {
+2    public boolean isInterleave(String s1, String s2, String s3) {
+3        int m = s1.length(), n = s2.length(), l = s3.length();
+4        if (m + n != l) return false;
+5
+6        boolean[] dp = new boolean[n + 1];
+7        dp[0] = true;
+8
+9        for (int j = 1; j <= n; ++j) {
+10            dp[j] = dp[j - 1] && s2.charAt(j - 1) == s3.charAt(j - 1);
+11        }
+12
+13        for (int i = 1; i <= m; ++i) {
+14            dp[0] = dp[0] && s1.charAt(i - 1) == s3.charAt(i - 1);
+15            for (int j = 1; j <= n; ++j) {
+16                dp[j] = (dp[j] && s1.charAt(i - 1) == s3.charAt(i + j - 1)) || (dp[j - 1] && s2.charAt(j - 1) == s3.charAt(i + j - 1));
+17            }
+18        }
+19        
+20        return dp[n];
+21    }
+22}
